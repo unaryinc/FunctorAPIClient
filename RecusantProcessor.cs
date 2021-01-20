@@ -36,7 +36,7 @@ namespace FunctorAPI
                 { "Port", Port.ToString() }
             };
 
-            bool Result;
+            bool Result = false;
 
             try
             {
@@ -48,14 +48,9 @@ namespace FunctorAPI
                     Token = Body;
                     Result = true;
                 }
-                else
-                {
-                    Result = false;
-                }
             }
             catch(Exception)
             {
-                Result = false;
             }
 
             SendEvent.Invoke("Functor.CreateServerResponse", Result);
@@ -70,26 +65,21 @@ namespace FunctorAPI
                 { "Token", Token }
             };
 
-            bool Result = true;
+            bool Result = false;
 
             try
             {
                 var Responce = await Client.PostAsync(Endpoint + (byte)Game + "/CloseServer.php", new FormUrlEncodedContent(Parameters));
                 var Body = await Responce.Content.ReadAsStringAsync();
 
-                if (Body != "Success")
+                if (Body == "Success")
                 {
-                    Result = false;
-                }
-
-                if (Result)
-                {
+                    Result = true;
                     Token = null;
                 }
             }
             catch(Exception)
             {
-                Result = false;
             }
 
             SendEvent.Invoke("Functor.CloseServerResponse", Result);
@@ -103,20 +93,19 @@ namespace FunctorAPI
                 { "PlayerCount", PlayerCount.ToString() }
             };
 
-            bool Result = true;
+            bool Result = false;
             
             try
             {
                 var Responce = await Client.PostAsync(Endpoint + (byte)Game + "/UpdateServer.php", new FormUrlEncodedContent(Parameters));
                 var Body = await Responce.Content.ReadAsStringAsync();
-                if (Body != "Success")
+                if (Body == "Success")
                 {
-                    Result = false;
+                    Result = true;
                 }
             }
             catch(Exception)
             {
-                Result = false;
             }
 
             SendEvent.Invoke("Functor.UpdateServerResponse", Result);
@@ -134,9 +123,11 @@ namespace FunctorAPI
                 }
                 var Body = await Responce.Content.ReadAsByteArrayAsync();
 
-                uint[] MapIndexes = new uint[Body.Length / 4];
+                int MapCount = Body.Length / 4;
 
-                for (int i = 0; i < Body.Length; i++)
+                uint[] MapIndexes = new uint[MapCount];
+
+                for (int i = 0; i < MapCount; i++)
                 {
                     MapIndexes[i] = BitConverter.ToUInt32(Body, i * 4);
                 }

@@ -1,0 +1,8 @@
+.vs/
+.vscode/
+bin/
+obj/
+FunctorAPITest/.vs/
+FunctorAPITest/.vscode/
+FunctorAPITest/bin/
+FunctorAPITest/obj/
