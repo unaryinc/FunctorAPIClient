@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctorAPIClient", "FunctorAPIClient.csproj", "{357328AE-9906-4048-91A1-A67DFC187CD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctorAPIClientTest", "FunctorAPITest\FunctorAPIClientTest.csproj", "{3D2A8371-669D-4A6A-8502-F06F6D4702B6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{357328AE-9906-4048-91A1-A67DFC187CD1} = {357328AE-9906-4048-91A1-A67DFC187CD1}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{357328AE-9906-4048-91A1-A67DFC187CD1}.Debug|x64.ActiveCfg = Debug|x64
+		{357328AE-9906-4048-91A1-A67DFC187CD1}.Debug|x64.Build.0 = Debug|x64
+		{357328AE-9906-4048-91A1-A67DFC187CD1}.Release|x64.ActiveCfg = Release|x64
+		{357328AE-9906-4048-91A1-A67DFC187CD1}.Release|x64.Build.0 = Release|x64
+		{3D2A8371-669D-4A6A-8502-F06F6D4702B6}.Debug|x64.ActiveCfg = Debug|x64
+		{3D2A8371-669D-4A6A-8502-F06F6D4702B6}.Debug|x64.Build.0 = Debug|x64
+		{3D2A8371-669D-4A6A-8502-F06F6D4702B6}.Release|x64.ActiveCfg = Release|x64
+		{3D2A8371-669D-4A6A-8502-F06F6D4702B6}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2BC26F6-0941-455B-8C1B-5D68839B4BA7}
+	EndGlobalSection
+EndGlobal
