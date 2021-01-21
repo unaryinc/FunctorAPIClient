@@ -11,7 +11,7 @@ namespace FunctorAPI
 {
     public class RecusantProcessor : Processor
     {
-        // 15 bytes
+        // 48 bytes
         public struct RecusantServer
         {
             // 8 bytes
@@ -22,7 +22,13 @@ namespace FunctorAPI
             public uint TileIndex;
             // 1 byte
             public byte PlayerCount;
+            // 1 byte
+            public byte UsernameLength;
+            // 32 bytes
+            public string Username;
         }
+
+        public static int RecusantServerSize = 48;
 
         private string Token;
 
@@ -41,6 +47,11 @@ namespace FunctorAPI
             try
             {
                 var Responce = await Client.PostAsync(Endpoint + (byte)Game + "/CreateServer.php", new FormUrlEncodedContent(Parameters));
+                if (!Responce.IsSuccessStatusCode)
+                {
+                    SendEvent.Invoke("Functor.CreateServerResponse", Result);
+                    return;
+                }
                 var Body = await Responce.Content.ReadAsStringAsync();
 
                 if (!Body.Contains(" "))
@@ -70,6 +81,11 @@ namespace FunctorAPI
             try
             {
                 var Responce = await Client.PostAsync(Endpoint + (byte)Game + "/CloseServer.php", new FormUrlEncodedContent(Parameters));
+                if (!Responce.IsSuccessStatusCode)
+                {
+                    SendEvent.Invoke("Functor.CloseServerResponse", Result);
+                    return;
+                }
                 var Body = await Responce.Content.ReadAsStringAsync();
 
                 if (Body == "Success")
@@ -98,6 +114,11 @@ namespace FunctorAPI
             try
             {
                 var Responce = await Client.PostAsync(Endpoint + (byte)Game + "/UpdateServer.php", new FormUrlEncodedContent(Parameters));
+                if (!Responce.IsSuccessStatusCode)
+                {
+                    SendEvent.Invoke("Functor.UpdateServerResponse", Result);
+                    return;
+                }
                 var Body = await Responce.Content.ReadAsStringAsync();
                 if (Body == "Success")
                 {
@@ -179,7 +200,7 @@ namespace FunctorAPI
                 }
                 var Body = await Responce.Content.ReadAsByteArrayAsync();
 
-                int ServerCount = (Body.Length - 1) / 15;
+                int ServerCount = (Body.Length - 1) / RecusantServerSize;
 
                 RecusantServer[] Servers = new RecusantServer[ServerCount];
 
@@ -187,16 +208,7 @@ namespace FunctorAPI
 
                 for (int i = 0; i < ServerCount; i++)
                 {
-                    bool Null = true;
-
-                    for(int k = 0; k < 8; ++k)
-                    {
-                        if(Body[Offset + k] != 0)
-                        {
-                            Null = false;
-                            break;
-                        }
-                    }
+                    bool Null = Body[Offset + 8 + 2 + 4 + 1] == 0;
 
                     if(!Null)
                     {
@@ -205,11 +217,14 @@ namespace FunctorAPI
                             Owner = BitConverter.ToUInt64(Body, Offset),
                             Port = BitConverter.ToUInt16(Body, Offset + 8),
                             TileIndex = BitConverter.ToUInt32(Body, Offset + 8 + 2),
-                            PlayerCount = Body[Offset + 8 + 2 + 4]
+                            PlayerCount = Body[Offset + 8 + 2 + 4],
+                            UsernameLength = Body[Offset + 8 + 2 + 4 + 1],
                         };
+
+                        Servers[i].Username = Encoding.UTF8.GetString(Body, Offset + 8 + 2 + 4 + 1 + 1, Servers[i].UsernameLength);
                     }
 
-                    Offset += 15;
+                    Offset += RecusantServerSize;
                 }
 
                 SendEvent.Invoke("Functor.QueueServersResponse", Servers);
