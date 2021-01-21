@@ -22,17 +22,24 @@ namespace FunctorAPI
         public Processor Processor { get; private set; }
         public bool Available { get; private set; }
 
-        public API(Game Game, Action<string, object> EventDispatch)
+        public API(Game Game, Action<string, object> EventDispatch, string TargetEndpoint = null)
         {
             Client = new HttpClient();
             TargetGame = Game;
             Event = EventDispatch;
 
-            #if DEBUG
-            Endpoint = "http://localhost:8000/";
-            #else
-            Endpoint = "https://api.unary.me/";
-            #endif
+            if(TargetEndpoint == null)
+            {
+                #if DEBUG
+                Endpoint = "http://localhost:8000/";
+                #else
+                Endpoint = "https://api.unary.me/";
+                #endif
+            }
+            else
+            {
+                Endpoint = TargetEndpoint;
+            }
 
             // Processor registration
             Processors = new Dictionary<Game, Processor>();
@@ -49,11 +56,6 @@ namespace FunctorAPI
             Processor = Processors[Game];
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-        }
-
-        ~API()
-        {
-
         }
     }
 }
