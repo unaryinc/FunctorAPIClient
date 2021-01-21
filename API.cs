@@ -24,6 +24,8 @@ namespace FunctorAPI
 
         public API(Game Game, Action<string, object> EventDispatch, string TargetEndpoint = null)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             Client = new HttpClient();
             TargetGame = Game;
             Event = EventDispatch;
@@ -54,8 +56,6 @@ namespace FunctorAPI
             }
 
             Processor = Processors[Game];
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
         }
     }
 }

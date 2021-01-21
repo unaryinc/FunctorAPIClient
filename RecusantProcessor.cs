@@ -46,13 +46,13 @@ namespace FunctorAPI
 
             try
             {
-                var Responce = await Client.PostAsync(Endpoint + (byte)Game + "/CreateServer.php", new FormUrlEncodedContent(Parameters));
-                if (!Responce.IsSuccessStatusCode)
+                var Response = await Client.PostAsync(Endpoint + (byte)Game + "/CreateServer.php", new FormUrlEncodedContent(Parameters));
+                if (!Response.IsSuccessStatusCode)
                 {
                     SendEvent.Invoke("Functor.CreateServerResponse", Result);
                     return;
                 }
-                var Body = await Responce.Content.ReadAsStringAsync();
+                var Body = await Response.Content.ReadAsStringAsync();
 
                 if (!Body.Contains(" "))
                 {
@@ -80,13 +80,13 @@ namespace FunctorAPI
 
             try
             {
-                var Responce = await Client.PostAsync(Endpoint + (byte)Game + "/CloseServer.php", new FormUrlEncodedContent(Parameters));
-                if (!Responce.IsSuccessStatusCode)
+                var Response = await Client.PostAsync(Endpoint + (byte)Game + "/CloseServer.php", new FormUrlEncodedContent(Parameters));
+                if (!Response.IsSuccessStatusCode)
                 {
                     SendEvent.Invoke("Functor.CloseServerResponse", Result);
                     return;
                 }
-                var Body = await Responce.Content.ReadAsStringAsync();
+                var Body = await Response.Content.ReadAsStringAsync();
 
                 if (Body == "Success")
                 {
@@ -113,13 +113,13 @@ namespace FunctorAPI
             
             try
             {
-                var Responce = await Client.PostAsync(Endpoint + (byte)Game + "/UpdateServer.php", new FormUrlEncodedContent(Parameters));
-                if (!Responce.IsSuccessStatusCode)
+                var Response = await Client.PostAsync(Endpoint + (byte)Game + "/UpdateServer.php", new FormUrlEncodedContent(Parameters));
+                if (!Response.IsSuccessStatusCode)
                 {
                     SendEvent.Invoke("Functor.UpdateServerResponse", Result);
                     return;
                 }
-                var Body = await Responce.Content.ReadAsStringAsync();
+                var Body = await Response.Content.ReadAsStringAsync();
                 if (Body == "Success")
                 {
                     Result = true;
@@ -136,13 +136,13 @@ namespace FunctorAPI
         {
             try
             {
-                var Responce = await Client.GetAsync(Endpoint + (byte)Game + "/Data/" + Faction + "/Map.bin");
-                if (!Responce.IsSuccessStatusCode)
+                var Response = await Client.GetAsync(Endpoint + (byte)Game + "/Data/" + Faction + "/Map.bin");
+                if (!Response.IsSuccessStatusCode)
                 {
                     SendEvent.Invoke("Functor.QueueMapResponse", null);
                     return;
                 }
-                var Body = await Responce.Content.ReadAsByteArrayAsync();
+                var Body = await Response.Content.ReadAsByteArrayAsync();
 
                 int MapCount = Body.Length / 4;
 
@@ -165,13 +165,13 @@ namespace FunctorAPI
         {
             try
             {
-                var Responce = await Client.GetAsync(Endpoint + (byte)Game + "/Data/" + Faction + "/Progress.bin");
-                if(!Responce.IsSuccessStatusCode)
+                var Response = await Client.GetAsync(Endpoint + (byte)Game + "/Data/" + Faction + "/Progress.bin");
+                if(!Response.IsSuccessStatusCode)
                 {
                     SendEvent.Invoke("Functor.QueueProgressResponse", null);
                     return;
                 }
-                var Body = await Responce.Content.ReadAsByteArrayAsync();
+                var Body = await Response.Content.ReadAsByteArrayAsync();
 
                 bool[] MapIndexes = new bool[Body.Length];
 
@@ -192,13 +192,13 @@ namespace FunctorAPI
         {
             try
             {
-                var Responce = await Client.GetAsync(Endpoint + (byte)Game + "/Data/" + Faction + "/Servers.bin");
-                if (!Responce.IsSuccessStatusCode)
+                var Response = await Client.GetAsync(Endpoint + (byte)Game + "/Data/" + Faction + "/Servers.bin");
+                if (!Response.IsSuccessStatusCode)
                 {
                     SendEvent.Invoke("Functor.QueueServersResponse", null);
                     return;
                 }
-                var Body = await Responce.Content.ReadAsByteArrayAsync();
+                var Body = await Response.Content.ReadAsByteArrayAsync();
 
                 int ServerCount = (Body.Length - 1) / RecusantServerSize;
 
