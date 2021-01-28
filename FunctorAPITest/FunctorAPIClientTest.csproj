@@ -53,9 +53,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Steamworks.NET">
-      <HintPath>.\Steamworks.NET.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,8 +63,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetworkingClient.cs" />
+    <Compile Include="NetworkingServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Random.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -76,6 +76,10 @@
     <ProjectReference Include="..\FunctorAPIClient.csproj">
       <Project>{357328ae-9906-4048-91a1-a67dfc187cd1}</Project>
       <Name>FunctorAPIClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="Steamworks.NET\Standalone\Steamworks.NET.csproj">
+      <Project>{b3543600-587c-4fdc-994a-cb0bdc629a7e}</Project>
+      <Name>Steamworks.NET</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
