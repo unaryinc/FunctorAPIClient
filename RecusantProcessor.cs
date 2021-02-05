@@ -102,7 +102,15 @@ namespace FunctorAPI
 
                 if (Body.StartsWith("Success "))
                 {
-                    Result.Username = Body.Substring(8);
+                    string[] Parts = Body.Split(' ');
+
+                    Result.SteamID = ulong.Parse(Parts[1]);
+                    Result.Username = Parts[2];
+                    for(int i = 3; i < Parts.Length; ++i)
+                    {
+                        Result.Username += " " + Parts[i];
+                    }
+
                     Result.Valid = true;
                 }
             }
@@ -356,14 +364,24 @@ namespace FunctorAPI
             SendEvent.Invoke("Functor.UpdateClient", Result);
         }
 
-        public async void CloseClient()
+        public async void CloseClient(ulong TargetSteamID = 0)
         {
-            if (ClientToken == null) { return; }
+            bool Host = TargetSteamID != 0;
 
-            var Parameters = new Dictionary<string, string>
+            if(Host && ServerToken == null) { return; }
+            else if(!Host && ClientToken == null) { return; }
+
+            var Parameters = new Dictionary<string, string>();
+
+            if(Host)
             {
-                { "Token", ClientToken }
-            };
+                Parameters["Token"] = ServerToken;
+                Parameters["SteamID"] = TargetSteamID.ToString();
+            }
+            else
+            {
+                Parameters["Token"] = ClientToken;
+            }
 
             bool Result = false;
 

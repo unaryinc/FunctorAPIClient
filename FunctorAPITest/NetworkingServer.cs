@@ -128,6 +128,7 @@ namespace FunctorAPITest
             }
             foreach (var Connection in Connections)
             {
+                Processor.CloseClient(Connection.Key);
                 SteamNetworkingSockets.CloseConnection(Connection.Value, 0, "", false);
             }
             Connections.Clear();
@@ -248,13 +249,14 @@ namespace FunctorAPITest
                 Console.WriteLine(Usernames[SteamID] + " disconnected");
                 Connections.Remove(SteamID);
                 Usernames.Remove(SteamID);
+                Processor.CloseClient(SteamID);
             }
             else if(UnauthorizedConnection.ContainsKey(SteamID))
             {
                 Console.WriteLine(Info.m_identityRemote.GetSteamID64() + " disconnected");
                 UnauthorizedConnection.Remove(SteamID);
             }
-
+            
             Clear();
             Program.Running = false;
         }

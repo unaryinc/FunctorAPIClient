@@ -52,7 +52,8 @@ namespace FunctorAPITest
 				else
                 {
 					Console.WriteLine("No available servers found.");
-                }
+					Running = false;
+				}
 			}
 			else if(EventName == "Functor.CreateClient")
             {
@@ -146,10 +147,11 @@ namespace FunctorAPITest
 		static void Main(string[] args)
         {
 			API = new API(Game.Recusant, EventTest, "https://api.unary.me/");
+			//API = new API(Game.Recusant, EventTest);
 			Processor = (RecusantProcessor)API.Processor;
 
 			Time1 = DateTime.Now;
-			Time1 = DateTime.Now;
+			Time2 = DateTime.Now;
 			TimeDelta = 0;
 
 			if (!SteamInit())
